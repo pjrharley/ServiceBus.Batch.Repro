@@ -1,0 +1,9 @@
+example:
+  servicebus:
+    batch-size: 50
+    prefetch: 50
+    batch-concurrency: 1
+    batch-timeout: 1s
+    connection-string: "TODO"
+    queue: my-example-queue
+    max-auto-lock-renew-duration: 0s

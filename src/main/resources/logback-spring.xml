@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter
+                        class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                </jsonFormatter>
+                <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+                <appendLineSeparator>true</appendLineSeparator>
+                <flattenMDC>true</flattenMDC>
+                <includeKeyValuePairs>true</includeKeyValuePairs>
+                <source>${SOURCE:- }</source>
+                <sourceType>${SOURCE_TYPE:- }</sourceType>
+                <region>${REGION:- }</region>
+                <isStaging>${IS_STAGING:- }</isStaging>
+                <appVersion>${abc}</appVersion>
+            </layout>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC-CONSOLE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="CONSOLE"/>
+        <queueSize>100000</queueSize>
+        <maxFlushTime>600000</maxFlushTime>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>./output.log</file>
+        <append>true</append>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter
+                        class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                </jsonFormatter>
+                <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+                <appendLineSeparator>true</appendLineSeparator>
+                <flattenMDC>true</flattenMDC>
+                <includeKeyValuePairs>true</includeKeyValuePairs>
+                <source>${SOURCE:- }</source>
+                <sourceType>${SOURCE_TYPE:- }</sourceType>
+                <region>${REGION:- }</region>
+            </layout>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC-FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE"/>
+        <queueSize>100000</queueSize>
+        <maxFlushTime>600000</maxFlushTime>
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="ASYNC-FILE"/>
+        <appender-ref ref="ASYNC-CONSOLE"/>
+    </root>
+    <logger name="com.azure.messaging.servicebus" level="TRACE">
+        <appender-ref ref="ASYNC-FILE"/>
+    </logger>
+</configuration>
